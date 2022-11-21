@@ -1,3 +1,77 @@
 <aura:component>
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-</aura:component>	
+<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+<aura:attribute name="numberOfRows" type="Integer" description="Number of Rows to add dynamically" access="private" default="1" />
+ <aura:attribute name="dynamicRowsList" type="List" description="List of Rows that are created dynamically" access="private" />
+ <aura:attribute name="message" type="String" default="" description="Success or error message" access="private" />
+ <aura:attribute name="messageType" type="String" description="Success or error message type" access="private" />
+ <div class="slds-grid slds-wrap">
+    <div class="slds-col slds-size_1-of-1 slds-large-size_2-of-12"></div>
+    <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
+        <aura:if isTrue="{!!empty(v.message)}" >
+            <div class="slds-notify_container slds-is-relative">
+                <div class="{! 'slds-notify slds-notify_toast slds-theme_' + v.messageType }" role="alert">
+                    <div class="slds-notify__content">
+                        <h2 class="slds-text-heading_small">{!v.message}</h2>
+                    </div>
+                </div>
+            </div>
+        </aura:if>
+
+        <div class="headerDiv slds-grid slds-wrap slds-p-around_x-small">
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12">
+                <p class="slds-p-top_x-small">Dynamic Row Creation</p>
+            </div>
+            <div class="multipleRowsDiv">
+                <span>Add Rows : &nbsp;</span>
+                <lightning:buttonIcon disabled="{!v.numberOfRows == 1}"   iconName="utility:dash" variant="border-filled" onclick="{!c.decrementRow}" alternativeText="Settings" />
+                <span>&nbsp; {!v.numberOfRows} &nbsp;</span>
+                <lightning:buttonIcon disabled="{!v.numberOfRows >= 10}"    iconName="utility:add" variant="border-filled" onclick="{!c.incrementRow}"  alternativeText="Settings"/>
+                <lightning:button name="multipleRows" variant="Neutral" label="Go" onclick="{!c.addRow}" />
+                <lightning:button variant="Neutral" label="SAVE"  onclick="{!c.saveRecords}"  />
+            </div>
+
+        </div>
+
+    
+    <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_col-bordered slds-table_striped outerTable" >
+        <thead>
+            <tr class="slds-text-title_caps">
+                <th scope="col" style="width:10%" title="S.No.">S.No.</th>
+                <th scope="col" style="width:25%" title="Account Name">Account Name</th>
+                <th scope="col" style="width:25%" title="Account Number">Account Number</th>
+                <th scope="col" style="width:25%" title="Phone">Phone</th>
+                <th scope="col" style="width:15%" title="Actions">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+              <aura:iteration items="{!v.dynamicRowsList}" var="eachRow" indexVar="index" >
+                <tr>
+                    <th scope="row">{! index + 1 }</th>
+                    <td title="Account Name">
+                        <lightning:input aura:id="dynamiRowsForm" disabled="{! if(eachRow.editMode,false,true) }" class="nameInput" required="true" maxlength="80" name="accName" value="{!eachRow.Name}" />
+                    </td>
+                    <td title="AccountNumber">
+                        <lightning:input aura:id="dynamiRowsForm" disabled="{! if(eachRow.editMode,false,true) }" maxlength="50" name="accNumber" value="{!eachRow.AccountNumber}" />
+                    </td>
+                    <td title="Phone">
+                        <lightning:input aura:id="dynamiRowsForm" type="tel" disabled="{! if(eachRow.editMode,false,true) }" maxlength="10" name="input3" value="{!eachRow.Phone}" />
+                    </td>
+                    <td class="slds-p-around_xx-small">
+                        <lightning:buttonIcon name="{! eachRow.rowNumber }" alternativeText="edit" variant="container" class="{! if(eachRow.editMode,'editClass','nonEditClass') }" iconName="utility:edit" onclick="{!c.editRow}"/>
+                        <lightning:button name="{! eachRow.rowNumber }" variant="brand" class="cloneClass" label="Clone" onclick="{!c.cloneRow}"/>
+                        <aura:if isTrue="{! eachRow.rowNumber == 1 }" >
+                            <lightning:buttonIcon alternativeText="add" variant="container" class="successClass" iconName="utility:add" onclick="{!c.addRow}"/>
+                        </aura:if>
+                        <aura:if isTrue="{! eachRow.rowNumber > 1 }" >
+                            <lightning:buttonIcon name="{! eachRow.rowNumber }" alternativeText="delete" variant="container" class="errorClass" iconName="utility:close" onclick="{!c.deleteRow}"/>
+                        </aura:if>
+                    </td>
+                </tr>
+            </aura:iteration>
+        </tbody>
+    </table>
+</div>
+ </div>
+
+
+</aura:component>

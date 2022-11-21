@@ -1,2 +1,38 @@
-.THIS {
-}
+.THIS .outerTable {
+    box-shadow: 1px 1px 10px -5px;
+    }
+    .THIS .headerDiv {
+        background-color: #12126d;
+        color: #fff;
+    }
+    .THIS .errorClass {
+        color: white !important;
+        background-color: #e45651;
+        border: 1px solid #fff;
+    }
+    .THIS .editClass {
+        color: white !important;
+        background-color: #556a75;
+        border: 1px solid #fff;
+    }
+    .THIS .nonEditClass {
+        border: 1px solid #fff;
+        background-color: #ddd;
+    }
+    .THIS .successClass {
+        color: white !important;
+        background-color: green;
+        border: 1px solid #fff;
+    }
+    .THIS .cloneClass {
+        border: 1px solid #fff;
+    }
+    .THIS .nameInput input {
+    border-left: 3px solid rgb(194, 57, 52);
+    }
+    .THIS .nameInput .slds-form-element__label {
+    display: none;
+    }
+    .THIS .multipleRowsInput {
+    width: 70px;
+    }
